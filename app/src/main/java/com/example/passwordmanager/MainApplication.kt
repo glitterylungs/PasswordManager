@@ -2,6 +2,8 @@ package com.example.passwordmanager
 
 import android.app.Application
 import com.example.passwordmanager.di.databaseModule
+import com.example.passwordmanager.di.mapperModule
+import com.example.passwordmanager.di.repositoryModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -16,6 +18,8 @@ class MainApplication : Application() {
             androidContext(this@MainApplication)
             modules(
                 databaseModule,
+                repositoryModule,
+                mapperModule,
             )
         }
     }
