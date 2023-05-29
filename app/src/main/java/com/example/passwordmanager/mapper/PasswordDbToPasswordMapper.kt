@@ -5,7 +5,7 @@ import com.example.passwordmanager.repository.model.Password
 
 interface PasswordDbToPasswordMapper : Mapper<PasswordDb, Password>
 
-class PasswordDbToPasswordMapperImpl : PasswordDbToPasswordMapper {
+internal class PasswordDbToPasswordMapperImpl : PasswordDbToPasswordMapper {
 
     override fun map(input: PasswordDb): Password =
         Password(
