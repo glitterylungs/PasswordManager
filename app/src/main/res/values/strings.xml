@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PasswordManager</string>
+    <string name="biometric_prompt_info_title">Fingerprint Authentication</string>
+    <string name="biometric_prompt_info_subtitle">Confirm with biometry to continue</string>
+    <string name="biometric_prompt_info_description">Use your finger or face to unlock the password</string>
+    <string name="cancel">Cancel</string>
 </resources>
