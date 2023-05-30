@@ -6,6 +6,7 @@ import com.example.passwordmanager.di.managerModule
 import com.example.passwordmanager.di.mapperModule
 import com.example.passwordmanager.di.providerModule
 import com.example.passwordmanager.di.repositoryModule
+import com.example.passwordmanager.di.useCaseModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -24,6 +25,8 @@ class MainApplication : Application() {
                 mapperModule,
                 managerModule,
                 providerModule,
+                useCaseModule,
+
             )
         }
     }
