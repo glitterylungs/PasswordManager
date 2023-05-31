@@ -12,7 +12,7 @@ internal class PasswordDbToPasswordMapperImpl : PasswordDbToPasswordMapper {
             id = input.id,
             name = input.name,
             login = input.login,
-            password = input.login,
+            password = input.password,
             iv = input.iv
         )
 }

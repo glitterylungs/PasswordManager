@@ -8,6 +8,8 @@ import com.example.passwordmanager.usecase.GetDecryptedPasswordUseCase
 import com.example.passwordmanager.usecase.GetDecryptedPasswordUseCaseImpl
 import com.example.passwordmanager.usecase.GetDecryptionCipherUseCase
 import com.example.passwordmanager.usecase.GetDecryptionCipherUseCaseImpl
+import com.example.passwordmanager.usecase.GetPasswordUseCase
+import com.example.passwordmanager.usecase.GetPasswordUseCaseImpl
 import com.example.passwordmanager.usecase.GetPasswordsUseCase
 import com.example.passwordmanager.usecase.GetPasswordsUseCaseImpl
 import org.koin.dsl.module
@@ -41,6 +43,12 @@ val useCaseModule = module {
 
     single<GetPasswordsUseCase> {
         GetPasswordsUseCaseImpl(
+            passwordRepository = get()
+        )
+    }
+
+    single<GetPasswordUseCase> {
+        GetPasswordUseCaseImpl(
             passwordRepository = get()
         )
     }

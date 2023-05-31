@@ -9,7 +9,9 @@ import kotlinx.coroutines.flow.map
 
 interface PasswordRepository {
 
-    fun getAllPasswords() : Flow<List<Password>>
+    fun getAllPasswords(): Flow<List<Password>>
+
+    fun getPassword(id: Int): Flow<Password>
 
     suspend fun insertPassword(password: Password)
 }
@@ -25,6 +27,11 @@ internal class PasswordRepositoryImpl(
             passwords.map { password ->
                 passwordDbToPasswordMapper.map(password)
             }
+        }
+
+    override fun getPassword(id: Int): Flow<Password> =
+        passwordDao.getPassword(id).map { password ->
+            passwordDbToPasswordMapper.map(password)
         }
 
     override suspend fun insertPassword(password: Password) =

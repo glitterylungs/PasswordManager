@@ -12,6 +12,9 @@ interface PasswordDao {
     @Query("SELECT * FROM password")
     fun getAllPasswords(): Flow<List<PasswordDb>>
 
+    @Query("SELECT * FROM password WHERE id = :id")
+    fun getPassword(id: Int): Flow<PasswordDb>
+
     @Insert
     suspend fun insertPassword(password: PasswordDb)
 }

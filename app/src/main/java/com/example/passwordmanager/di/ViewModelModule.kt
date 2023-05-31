@@ -10,13 +10,15 @@ val viewModelModule = module {
     viewModel {
         PasswordListViewModel(
             addPasswordUseCase = get(),
-            getDecryptedPasswordUseCase = get(),
-            getDecryptionCipherUseCase = get(),
             getPasswordsUseCase = get()
         )
     }
 
     viewModel {
-        PasswordDetailsViewModel()
+        PasswordDetailsViewModel(
+            getDecryptedPasswordUseCase = get(),
+            getDecryptionCipherUseCase = get(),
+            getPasswordUseCase = get()
+        )
     }
 }
