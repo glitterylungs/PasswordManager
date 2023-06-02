@@ -16,7 +16,8 @@ class PasswordListViewModel(
     private val getPasswordsUseCase: GetPasswordsUseCase,
 ) : ViewModel() {
 
-    var passwords = MutableStateFlow(emptyList<Password?>())
+    var passwords = MutableStateFlow(emptyMap<String, List<Password?>>())
+
     var name = mutableStateOf("")
         private set
 
@@ -35,14 +36,12 @@ class PasswordListViewModel(
         password.value = ""
     }
 
-    fun getPasswords() {
+    fun getPasswords() =
         viewModelScope.launch(Dispatchers.IO) {
             getPasswordsUseCase.execute().collect {
-                println(it)
                 passwords.value = it
             }
         }
-    }
 
     fun addPassword() {
         val newPassword = NewPassword(

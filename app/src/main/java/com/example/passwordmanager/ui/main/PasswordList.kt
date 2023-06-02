@@ -1,7 +1,10 @@
 package com.example.passwordmanager.ui.main
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,8 +16,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -31,6 +34,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +43,7 @@ import com.example.passwordmanager.repository.model.Password
 import com.example.passwordmanager.ui.theme.PasswordManagerTheme
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalFoundationApi::class)
 @ExperimentalMaterial3Api
 @Composable
 fun PasswordList(
@@ -49,7 +54,7 @@ fun PasswordList(
     var name by remember { viewModel.name }
     var login by remember { viewModel.login }
     var password by remember { viewModel.password }
-    val passwords by viewModel.passwords.collectAsState(initial = emptyList())
+    val passwords by viewModel.passwords.collectAsState(initial = emptyMap())
 
     LaunchedEffect(true) {
         viewModel.getPasswords()
@@ -67,8 +72,10 @@ fun PasswordList(
                 viewModel.changeIsDialogVisible(false)
             },
             onSave = {
-                viewModel.addPassword()
-                viewModel.changeIsDialogVisible(false)
+                if (name.isNotEmpty() and login.isNotEmpty() and password.isNotEmpty()) {
+                    viewModel.addPassword()
+                    viewModel.changeIsDialogVisible(false)
+                }
             }
         )
 
@@ -77,7 +84,7 @@ fun PasswordList(
             TopAppBar(title = {
                 Text(
                     text = "PasswordManager",
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.headlineMedium,
                 )
             })
         },
@@ -89,14 +96,28 @@ fun PasswordList(
     ) {
         LazyColumn(
             modifier = Modifier.padding(
-                start = 10.dp,
+                start = 12.dp,
                 top = it.calculateTopPadding(),
-                end = 10.dp,
+                end = 12.dp,
                 bottom = it.calculateBottomPadding()
             )
         ) {
-            items(passwords) { password ->
-                PasswordListItem(password, navigateToPasswordDetails)
+            passwords.forEach { (header, passwordsForHeader) ->
+                stickyHeader {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.background)
+                    ) {
+                        Text(
+                            text = header,
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
+                }
+                items(passwordsForHeader) { password ->
+                    PasswordListItem(password, navigateToPasswordDetails)
+                }
             }
         }
     }
@@ -104,10 +125,9 @@ fun PasswordList(
 
 @Composable
 fun PasswordListItem(password: Password?, navigateToDetails: (Int) -> Unit) {
-
     Card(
         modifier = Modifier
-            .padding(vertical = 4.dp)
+            .padding(vertical = 6.dp)
             .fillMaxWidth()
             .clickable {
                 password?.let {
@@ -115,25 +135,25 @@ fun PasswordListItem(password: Password?, navigateToDetails: (Int) -> Unit) {
                 }
             }
     ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 10.dp)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 5.dp, horizontal = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            password?.let {
-                PasswordListItemText(text = password.name)
-                Divider()
-                PasswordListItemText(text = password.login)
+            Column {
+                password?.let {
+                    Text(text = password.name, style = MaterialTheme.typography.titleMedium)
+                    Text(text = password.login, style = MaterialTheme.typography.bodyLarge)
+                }
             }
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowRight,
+                contentDescription = "Go to details"
+            )
         }
     }
-}
-
-@Composable
-fun PasswordListItemText(text: String) {
-    Text(
-        text = text,
-        modifier = Modifier.padding(vertical = 5.dp),
-        style = MaterialTheme.typography.bodyLarge
-    )
 }
 
 @ExperimentalMaterial3Api
@@ -161,7 +181,10 @@ fun AddPasswordDialog(
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                Text(text = "Add new password")
+                Text(
+                    text = "Add new password",
+                    style = MaterialTheme.typography.titleMedium
+                )
                 Spacer(modifier = Modifier.padding(10.dp))
                 TextField(
                     value = name,

@@ -7,16 +7,16 @@ import kotlinx.coroutines.flow.map
 
 interface GetPasswordsUseCase {
 
-    fun execute(): Flow<List<Password?>>
+    fun execute(): Flow<Map<String, List<Password?>>>
 }
 
 internal class GetPasswordsUseCaseImpl(
     private val passwordRepository: PasswordRepository
 ) : GetPasswordsUseCase {
-    override fun execute(): Flow<List<Password?>> =
+    override fun execute(): Flow<Map<String, List<Password?>>> =
         passwordRepository.getAllPasswords().map {
-            it.sortedBy { password ->
-                password?.name
-            }
+            it.groupBy { password ->
+                password?.name?.first()?.uppercase() ?: ""
+            }.toSortedMap()
         }
 }
