@@ -1,5 +1,6 @@
 package com.example.passwordmanager.ui.details
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,6 +23,8 @@ class PasswordDetailsViewModel(
     private val deletePasswordUseCase: DeletePasswordUseCase
 ) : ViewModel() {
 
+    var passwordObject: MutableState<Password?> = mutableStateOf(null)
+
     var name = mutableStateOf("")
         private set
 
@@ -32,7 +35,7 @@ class PasswordDetailsViewModel(
         private set
 
     var isReadOnly = mutableStateOf(true)
-    private set
+        private set
 
 
     fun getDataById(id: Int) {
@@ -41,6 +44,8 @@ class PasswordDetailsViewModel(
                 name.value = it.name
                 login.value = it.login
                 password.value = it.password
+
+                passwordObject.value = it
             }
         }
     }

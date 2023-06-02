@@ -105,13 +105,6 @@ fun PasswordList(
 @Composable
 fun PasswordListItem(password: Password?, navigateToDetails: (Int) -> Unit) {
 
-//    val context = LocalContext.current
-//    val authenticationManager = get<AuthenticationManager>()
-//    val toastProvider = get<ToastProvider>()
-
-    // var isPasswordVisible by remember { mutableStateOf(false) }
-    // var decryptedPassword by remember { mutableStateOf("") }
-
     Card(
         modifier = Modifier
             .padding(vertical = 4.dp)
@@ -121,39 +114,6 @@ fun PasswordListItem(password: Password?, navigateToDetails: (Int) -> Unit) {
                     navigateToDetails(password.id)
                 }
             }
-        //                {
-//                    if (!isPasswordVisible) {
-//                        if (authenticationManager.canAuthenticate(context)) {
-//                            authenticationManager.authenticate(
-//                                activity = context as FragmentActivity,
-//                                cipher = cipher,
-//                                callback = object : BiometricPrompt.AuthenticationCallback() {
-//                                    override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-//                                        super.onAuthenticationSucceeded(result)
-//                                        decryptedPassword = onAuthenticationSucceeded()
-//                                        isPasswordVisible = true
-//                                    }
-//
-//                                    override fun onAuthenticationError(
-//                                        errorCode: Int,
-//                                        errString: CharSequence
-//                                    ) {
-//                                        super.onAuthenticationError(errorCode, errString)
-//                                        toastProvider.show(errString)
-//                                    }
-//
-//                                    override fun onAuthenticationFailed() {
-//                                        super.onAuthenticationFailed()
-//                                        toastProvider.show("Authentication failed")
-//                                    }
-//                                }
-//                            )
-//                        } else {
-//                            toastProvider.show("No biometric authentication available for your device")
-//                        }
-//                    }
-//                }
-
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 10.dp)
@@ -163,16 +123,6 @@ fun PasswordListItem(password: Password?, navigateToDetails: (Int) -> Unit) {
                 Divider()
                 PasswordListItemText(text = password.login)
             }
-//            Box(
-//                modifier = Modifier.height(30.dp)
-//            ) {
-//                //   if (isPasswordVisible) PasswordListItemText(text = decryptedPassword)
-//                // else
-//                Icon(
-//                    painter = painterResource(id = R.drawable.ic_visibility),
-//                    contentDescription = "Password",
-//                )
-//            }
         }
     }
 }
