@@ -33,6 +33,8 @@ fun PasswordDetails(
     var login by remember { viewModel.login }
     var password by remember { viewModel.password }
 
+    val isReadOnly by remember { viewModel.isReadOnly }
+
     LaunchedEffect(true) {
         viewModel.getDataById(id)
     }
@@ -47,10 +49,15 @@ fun PasswordDetails(
                     }
                 },
                 actions = {
-                    IconButton(onClick = {/* delete*/ }) {
+                    IconButton(onClick = {
+                        viewModel.deletePassword(id)
+                        navigateToPreviousScreen()
+                    }) {
                         Icon(Icons.Default.Delete, null)
                     }
-                    IconButton(onClick = {/* edit*/ }) {
+                    IconButton(onClick = {
+                        viewModel.toggleEditMode(id)
+                    }) {
                         Icon(Icons.Default.Edit, null)
                     }
                 }
@@ -61,20 +68,18 @@ fun PasswordDetails(
             TextField(
                 value = name,
                 onValueChange = { name = it },
-                readOnly = true
+                readOnly = isReadOnly
             )
             TextField(
                 value = login,
                 onValueChange = { login = it },
-                readOnly = true
+                readOnly = isReadOnly
             )
             TextField(
                 value = password,
                 onValueChange = { password = it },
-                readOnly = true
+                readOnly = isReadOnly
             )
         }
-
     }
-
 }

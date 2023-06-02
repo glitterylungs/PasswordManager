@@ -8,32 +8,40 @@ import com.example.passwordmanager.usecase.AddPasswordUseCase
 import com.example.passwordmanager.usecase.GetPasswordsUseCase
 import com.example.passwordmanager.usecase.model.NewPassword
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class PasswordListViewModel(
     private val addPasswordUseCase: AddPasswordUseCase,
-    getPasswordsUseCase: GetPasswordsUseCase,
+    private val getPasswordsUseCase: GetPasswordsUseCase,
 ) : ViewModel() {
 
-    var passwords: Flow<List<Password>> = getPasswordsUseCase.execute()
-
+    var passwords = MutableStateFlow(emptyList<Password?>())
     var name = mutableStateOf("")
-    private set
+        private set
 
     var login = mutableStateOf("")
-    private set
+        private set
 
     var password = mutableStateOf("")
-    private set
+        private set
 
     var isDialogVisible = mutableStateOf(false)
-    private set
+        private set
 
     private fun clearTextFields() {
         name.value = ""
         login.value = ""
         password.value = ""
+    }
+
+    fun getPasswords() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getPasswordsUseCase.execute().collect {
+                println(it)
+                passwords.value = it
+            }
+        }
     }
 
     fun addPassword() {

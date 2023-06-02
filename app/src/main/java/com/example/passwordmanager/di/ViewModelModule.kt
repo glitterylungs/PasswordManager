@@ -18,7 +18,9 @@ val viewModelModule = module {
         PasswordDetailsViewModel(
             getDecryptedPasswordUseCase = get(),
             getDecryptionCipherUseCase = get(),
-            getPasswordUseCase = get()
+            getPasswordUseCase = get(),
+            updatePasswordUseCase = get(),
+            deletePasswordUseCase = get()
         )
     }
 }

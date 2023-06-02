@@ -26,6 +26,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -49,6 +50,10 @@ fun PasswordList(
     var login by remember { viewModel.login }
     var password by remember { viewModel.password }
     val passwords by viewModel.passwords.collectAsState(initial = emptyList())
+
+    LaunchedEffect(true) {
+        viewModel.getPasswords()
+    }
 
     if (isDialogVisible)
         AddPasswordDialog(
@@ -98,7 +103,7 @@ fun PasswordList(
 }
 
 @Composable
-fun PasswordListItem(password: Password, navigateToDetails: (Int) -> Unit) {
+fun PasswordListItem(password: Password?, navigateToDetails: (Int) -> Unit) {
 
 //    val context = LocalContext.current
 //    val authenticationManager = get<AuthenticationManager>()
@@ -111,9 +116,12 @@ fun PasswordListItem(password: Password, navigateToDetails: (Int) -> Unit) {
         modifier = Modifier
             .padding(vertical = 4.dp)
             .fillMaxWidth()
-            .clickable(
-                onClick = { navigateToDetails(password.id) }
-                //                {
+            .clickable {
+                password?.let {
+                    navigateToDetails(password.id)
+                }
+            }
+        //                {
 //                    if (!isPasswordVisible) {
 //                        if (authenticationManager.canAuthenticate(context)) {
 //                            authenticationManager.authenticate(
@@ -145,14 +153,16 @@ fun PasswordListItem(password: Password, navigateToDetails: (Int) -> Unit) {
 //                        }
 //                    }
 //                }
-            )
+
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 10.dp)
         ) {
-            PasswordListItemText(text = password.name)
-            Divider()
-            PasswordListItemText(text = password.login)
+            password?.let {
+                PasswordListItemText(text = password.name)
+                Divider()
+                PasswordListItemText(text = password.login)
+            }
 //            Box(
 //                modifier = Modifier.height(30.dp)
 //            ) {

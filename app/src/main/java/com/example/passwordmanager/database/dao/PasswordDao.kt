@@ -10,11 +10,17 @@ import kotlinx.coroutines.flow.Flow
 interface PasswordDao {
 
     @Query("SELECT * FROM password")
-    fun getAllPasswords(): Flow<List<PasswordDb>>
+    fun getAllPasswords(): Flow<List<PasswordDb?>>
 
     @Query("SELECT * FROM password WHERE id = :id")
     fun getPassword(id: Int): Flow<PasswordDb>
 
     @Insert
     suspend fun insertPassword(password: PasswordDb)
+
+    @Query("UPDATE password SET name = :name, login = :login, password = :password, initialization_vector = :iv WHERE id = :id")
+    suspend fun updatePassword(id: Int, name: String, login: String, password: String, iv: String)
+
+    @Query("DELETE FROM password WHERE id = :id")
+    suspend fun deletePassword(id: Int)
 }
