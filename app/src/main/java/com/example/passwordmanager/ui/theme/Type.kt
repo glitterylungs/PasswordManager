@@ -14,6 +14,11 @@ val Typography = Typography(
         fontSize = 28.sp,
         lineHeight = 36.sp
     ),
+    headlineSmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
+        fontSize = 24.sp,
+        lineHeight = 32.sp
+    ),
     titleMedium = TextStyle(
         fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
         fontSize = 20.sp,

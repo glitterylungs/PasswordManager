@@ -10,7 +10,6 @@ import com.example.passwordmanager.usecase.GetDecryptedPasswordUseCase
 import com.example.passwordmanager.usecase.GetDecryptionCipherUseCase
 import com.example.passwordmanager.usecase.GetPasswordUseCase
 import com.example.passwordmanager.usecase.UpdatePasswordUseCase
-import com.example.passwordmanager.usecase.model.NewPassword
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.crypto.Cipher
@@ -37,6 +36,8 @@ class PasswordDetailsViewModel(
     var isReadOnly = mutableStateOf(true)
         private set
 
+    var isDialogVisible = mutableStateOf(false)
+        private set
 
     fun getDataById(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -56,29 +57,25 @@ class PasswordDetailsViewModel(
     fun getDecryptionCipher(iv: String): Cipher =
         getDecryptionCipherUseCase.execute(iv)
 
-    private fun updatePassword(passwordId: Int) {
-        val newPassword = NewPassword(
-            id = passwordId,
-            name = name.value,
-            login = login.value,
-            password = password.value
-        )
-
+    private fun updatePassword(id: Int, name: String, login: String) =
         viewModelScope.launch(Dispatchers.IO) {
-            updatePasswordUseCase.execute(newPassword)
+            updatePasswordUseCase.execute(id, name, login)
         }
-    }
 
     fun deletePassword(id: Int) =
         viewModelScope.launch(Dispatchers.IO) {
             deletePasswordUseCase.execute(id)
         }
 
-    fun toggleEditMode(id: Int) {
+    fun toggleEditMode(id: Int, name: String, login: String) {
         isReadOnly.value = !isReadOnly.value
 
         if (isReadOnly.value) {
-            updatePassword(id)
+            updatePassword(id, name, login)
         }
+    }
+
+    fun changeIsDialogVisible(isVisible: Boolean) {
+        isDialogVisible.value = isVisible
     }
 }

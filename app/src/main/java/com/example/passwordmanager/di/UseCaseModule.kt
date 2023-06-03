@@ -65,8 +65,7 @@ val useCaseModule = module {
 
     single<UpdatePasswordUseCase> {
         UpdatePasswordUseCaseImpl(
-            passwordRepository = get(),
-            encryptPasswordUseCase = get()
+            passwordRepository = get()
         )
     }
 }

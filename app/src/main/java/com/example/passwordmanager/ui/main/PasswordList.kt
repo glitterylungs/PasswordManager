@@ -84,7 +84,7 @@ fun PasswordList(
             TopAppBar(title = {
                 Text(
                     text = "PasswordManager",
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.headlineMedium
                 )
             })
         },

@@ -16,7 +16,7 @@ interface PasswordRepository {
 
     suspend fun insertPassword(password: Password)
 
-    suspend fun updatePassword(password: Password)
+    suspend fun updatePassword(id: Int, name: String, login: String)
 
     suspend fun deletePassword(id: Int)
 }
@@ -44,14 +44,8 @@ internal class PasswordRepositoryImpl(
     override suspend fun insertPassword(password: Password) =
         passwordDao.insertPassword(passwordToPasswordDbMapper.map(password))
 
-    override suspend fun updatePassword(password: Password) =
-        passwordDao.updatePassword(
-            password.id,
-            password.name,
-            password.login,
-            password.password,
-            password.iv
-        )
+    override suspend fun updatePassword(id: Int, name: String, login: String) =
+        passwordDao.updatePassword(id, name, login)
 
     override suspend fun deletePassword(id: Int) =
         passwordDao.deletePassword(id)
